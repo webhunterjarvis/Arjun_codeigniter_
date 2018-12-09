@@ -1,4 +1,14 @@
 <?php 
+/****************************************************
+*****************************************************
+@ Author: Arjun Singh Saini
+@ Controller: MY_Controller
+@ Author URI: https://devartisan.in
+@ Email: webhunterr@gmail.com
+@ Description: this is essential script for 
+  web developement purpose. its also private use only. 
+******************************************************
+*****************************************************/
 class MY_Controller extends CI_Controller{
 
 	public function __construct(){
