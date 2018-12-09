@@ -1,4 +1,14 @@
 <?php 
+/****************************************************
+*****************************************************
+@ Author: Arjun Singh Saini
+@ Model Name: Dynamic Model (dmodel)
+@ Author URI: https://devartisan.in
+@ Email: webhunterr@gmail.com
+@ Description: this is essential script for 
+  web developement purpose. its also private use only. 
+******************************************************
+*****************************************************/
 class Dynamic_model extends CI_Model{
 /*
 **************************************************************************
