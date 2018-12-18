@@ -53,6 +53,16 @@ function drepaceslash($path){
 	 $imp = explode("-",$path);
     return implode("/",$imp);
 }
+function stou($path){
+	 $imp = explode(" ",$path);
+    return implode("_",$imp);
+}
+
+function utos($path){
+	 $imp = explode("_",$path);
+    return implode(" ",$imp);
+}
+
 
 function refresh(){
     echo '<meta http-equiv="refresh" content="1">';
@@ -62,7 +72,8 @@ function clean($string){
 	$vals = rtrim($string);
 	$vals2 = ltrim($vals);
 	$filter =  getdash($vals2);
-	echo preg_replace('/[^A-Za-z0-9\-]/', '', $filter);
+	$filter2 =  preg_replace('/[^A-Za-z0-9\-]/', '', $filter);
+	return $filter2;
 }
 
 
@@ -72,11 +83,11 @@ function escape($str){
 
 
 
-function path($url){
+function path($url= null){
 	if(!empty($url)){
-		echo base_url($url);
+		return base_url($url);
 	}else{
-	echo  base_url();	
+	return  base_url();	
 	}
 	
 }
@@ -89,6 +100,9 @@ function ctime(){
 function timestamp(){
 	echo date('Y-m-d h:i:s');
 }
+
+
+
 
 
 function time_ago($timestamp){
