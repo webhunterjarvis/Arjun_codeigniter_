@@ -1,18 +1,8 @@
 <?php 
-/****************************************************
-*****************************************************
-@ Author: Arjun Singh Saini
-@ Model Name: Dynamic Model (dmodel)
-@ Author URI: https://devartisan.in
-@ Email: webhunterr@gmail.com
-@ Description: this is essential script for 
-  web developement purpose. its also private use only. 
-******************************************************
-*****************************************************/
 class Dynamic_model extends CI_Model{
 /*
 **************************************************************************
-this is my dynamic model 
+this is my dynamic model created by arjun saini
 **************************************************************************
 */
     public function _insert($tbl,$values){
@@ -64,6 +54,30 @@ this is my dynamic model
         
         return $q->result();
     }
+	
+	public function _find_limit($tbl,$lim){
+        $q = $this->db->order_by('id', 'DESC');
+        $q = $this->db->LIMIT($lim);
+        $q = $this->db->get($tbl);
+        
+        return $q->result();
+    }
+	
+	public function _find_limit_row($tbl,$lim){
+        $q = $this->db->order_by('id', 'DESC');
+        $q = $this->db->LIMIT($lim);
+        $q = $this->db->get($tbl);
+        
+        return $q->row();
+    }
+	
+	
+	public function _find_where($tbl, $action){
+        $q = $this->db->order_by('id', 'DESC');
+        $q = $this->db->get_where($tbl, $action);
+        
+        return $q->result();
+    }
 
 
     public function _find_result($tbl, $values){
@@ -77,7 +91,7 @@ this is my dynamic model
 
 
     public function _checking($tbl, $values){
-        //this finction will return true or false value if someting appear.\
+        //this function will return true or false value .
         $q = $this->db->get_where($tbl, $values);
         if($q->row()){
             return true;
