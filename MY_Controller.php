@@ -15,6 +15,7 @@ class MY_Controller extends CI_Controller{
         
            parent::__construct();
 		  $this->load->helper('security');
+		  $this->load->helper('scripts');
     } 
 
 	//dynamic delete function 
@@ -57,6 +58,7 @@ class MY_Controller extends CI_Controller{
 	
 	public function __updatebyidlink($tbl,$rurl, $umsg, $unomsg, $udata)
 	{
+		
 			$id =  $this->uri->segment(3);
 			if(empty($id)){
 				redirect($rurl);
@@ -103,4 +105,158 @@ class MY_Controller extends CI_Controller{
 				msgnpath("Record couldn't be deleted.",base_url($path));
 			}
 		}
+		
+			
+		public function __data_with_photo_upload($tbl, $sbtn, $upload, $filename, $msg, $redirect, $url_name = null, $url_value = null){
+		
+				$config['upload_path'] = $upload;
+                $config['allowed_types'] = 'jpg|jpeg|png|gif';
+                $config['file_name'] = $_FILES[$filename]['name'];
+            
+            //Load upload library and initialize configuration
+				$this->load->library('upload',$config);
+				$this->upload->initialize($config);
+
+				if($this->upload->do_upload($filename))
+				{
+					$uploadData = $this->upload->data();
+					$picture = $uploadData['file_name'];
+
+					$data  = $this->input->post();
+						unset($data[$sbtn]);
+						
+						$data[$filename] = $picture;
+						
+						if(empty($url_name) or is_null($url_name)){
+							
+							$insertData = $this->dmodel->_insert($tbl,$data);
+							if($insertData){
+							   msgnpath($msg, base_url($redirect));
+							 }
+						}else{
+							$data[$url_name] =  clean($url_value);
+							$insertData = $this->dmodel->_insert($tbl,$data);
+							if($insertData){
+							   msgnpath($msg, base_url($redirect));
+							 }
+						}
+					
+				}
+
+		
+		}
+		
+		
+		public function __data_update_with_photo_upload($tbl, $sbtn, $upload, $filename, $msg, $redirect, $id,$url_name = null, $url_value = null){
+				//$id = ;
+				$where = ['id'=> $id];
+				$config['upload_path'] = $upload;
+                $config['allowed_types'] = 'jpg|jpeg|png|gif';
+                $config['file_name'] = $_FILES[$filename]['name'];
+            
+            //Load upload library and initialize configuration
+				$this->load->library('upload',$config);
+				$this->upload->initialize($config);
+
+				if($this->upload->do_upload($filename))
+				{
+					$uploadData = $this->upload->data();
+					$picture = $uploadData['file_name'];
+
+					$data  = $this->input->post();
+						unset($data[$sbtn]);
+						
+						$data[$filename] = $picture;
+						
+						if(empty($url_name) or is_null($url_name)){
+							
+							$insertData = $this->dmodel->_update($tbl,$where, $data);
+							if($insertData){
+							   msgnpath($msg, base_url($redirect));
+							 }
+						}else{
+							$data[$url_name] =  clean($url_value);
+							$insertData = $this->dmodel->_update($tbl,$where, $data);
+							if($insertData){
+							   msgnpath($msg, base_url($redirect));
+							 }
+						}
+					
+				}
+
+		
+		}
+		
+		
+		
+		public function __photo_upload($tbl, $sbtn, $upload, $filename, $msg, $redirect, $id){
+				//$id = ;
+				$where = ['id'=> $id];
+				$config['upload_path'] = $upload;
+                $config['allowed_types'] = 'jpg|jpeg|png|gif';
+                $config['file_name'] = $_FILES[$filename]['name'];
+            
+            //Load upload library and initialize configuration
+				$this->load->library('upload',$config);
+				$this->upload->initialize($config);
+
+				if($this->upload->do_upload($filename))
+				{
+					$uploadData = $this->upload->data();
+					$picture = $uploadData['file_name'];
+
+					$data  = $this->input->post();
+						unset($data[$sbtn]);
+						
+						$data[$filename] = $picture;
+						
+						$insertData = $this->dmodel->_update($tbl,$where, $data);
+							if($insertData){
+							   msgnpath($msg, base_url($redirect));
+						}
+					
+				}
+
+		
+		}
+		
+		
+		
+		public function __call_count($tbl=null, $action = array()){
+			//num rows functions.
+			if(count($action)==0){
+				$all_visible = $this->dmodel-> _num_rows($tbl);
+				return   $all_visible;
+			}
+			else{
+				$all_visible = $this->dmodel->_num_rows_where($tbl, $action);
+				return  $all_visible;
+			}
+			 
+		}
+		
+		public function __my_insert($tbl, $sbtn, $msg, $redirect){
+			$data = $this->input->post();
+				unset($data[$sbtn]);
+			$this->dmodel->_insert($tbl,$data);
+			msgnpath($msg,base_url($redirect));
+		}
+		
+		
+		public function _get_showing_part($tbl = null){
+			// counting 
+			//getting result 
+			
+				$get_all = $this->dmodel->_get_all($tbl);
+				$darray =  [
+			
+									'num_rows' => $this->__call_count($tbl),
+									'get_all' => $get_all
+							];
+			
+			return $darray;
+			
+		}
+		
+		
 }
